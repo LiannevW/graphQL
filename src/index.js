@@ -2,7 +2,8 @@ import koa from 'koa';
 import koaRouter from 'koa-router';
 import koaBody from 'koa-bodyparser';
 import { graphqlKoa, graphiqlKoa } from 'apollo-server-koa';
-import schema from './schema/example';
+import schema from './schema/movie';
+
 
 const app = new koa();
 const router = new koaRouter();

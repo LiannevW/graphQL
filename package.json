@@ -18,6 +18,7 @@
     "graphql-tools": "^2.18.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.3.0"
+    "koa-router": "^7.3.0",
+    "request-promise-json": "^1.0.4"
   }
 }

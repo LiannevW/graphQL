@@ -40,32 +40,35 @@ export const typeDefs = `
   # the schema allows the following query:
   type Query {
     movies: [Movie]
-    movie(id: ID, imdb_id: String!): Movie
+    movie(id: ID, imdb_id: String): Movie
   }
+
 `;
 
-// const resolvers = {
-//   Query: {
-//     movie: async (obj, args, context, info) => {
-//       if (args.id) {
-//         return http
-//           .get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${MOVIE_DB_API_KEY}&language=en-US`)
-//       }
-//       if (args.imdb_id) {
-//         const results = await http
-//           .get(`https://api.themoviedb.org/3/find/${args.imdb_id}?api_key=${MOVIE_DB_API_KEY}&language=en-US&external_source=imdb_id`)
-//
-//         if (results.movie_results.length > 0) {
-//           const movieId = results.movie_results[0].id
-//           return http
-//             .get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${MOVIE_DB_API_KEY}&language=en-US`)
-//         }
-//       }
-//     },
-//     movies: async (obj, args, context, info) => {
-//
-//     }
-//   },
+const resolvers = {
+  Query: {
+    movie: async (obj, args, context, info) => {
+      if (args.id) {
+        return http
+          .get(`https://api.themoviedb.org/3/movie/${args.id}?api_key=${MOVIE_DB_API_KEY}&language=en-US`)
+      }
+      if (args.imdb_id) {
+        const results = await http
+          .get(`https://api.themoviedb.org/3/find/${args.imdb_id}?api_key=${MOVIE_DB_API_KEY}&language=en-US&external_source=imdb_id`)
+
+        if (results.movie_results.length > 0) {
+          const movieId = results.movie_results[0].id
+          return http
+            .get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${MOVIE_DB_API_KEY}&language=en-US`)
+        }
+      }
+    },
+    movies: async (obj, args, context, info) => {
+      const {results} = await http
+          .get(`https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DB_API_KEY}&language=en-US&page=1`)
+        return results
+      },
+  },
 //   Mutation: {
 //     rateMovie: async (obj, args, context, info) => {
 //       const movie = await http
@@ -82,11 +85,11 @@ export const typeDefs = `
 //         )
 //     },
 //   },
-// };
+};
 
 const schema = makeExecutableSchema({
   typeDefs,
-  // resolvers,
+  resolvers,
 });
 
 export default schema;
